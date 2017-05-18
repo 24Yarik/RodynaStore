@@ -1,0 +1,78 @@
+﻿@model Domain.Entities.Sweet
+
+@{
+    ViewBag.Title = "Панель адміністрування";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3>Редагування товару «@Model.Name»</h3>
+    </div>
+
+    @using (Html.BeginForm("Edit", "Admin",
+        FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.SweetId)
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                switch (property.PropertyName)
+                {
+                    case "SweetId":
+                    case "ImageData":
+                    case "ImageMimeType":
+                        // Нічого не робити
+                        break;
+                    default:
+                        <div class="form-group">
+                            <label>@(property.DisplayName ?? property.PropertyName)</label>
+                            @if (property.PropertyName == "Ingredients")
+                            {
+                                @Html.TextArea(property.PropertyName, null,
+                                    new { @class = "form-control", rows = 3 })
+                            }
+                            else
+                            {
+                                @Html.TextBox(property.PropertyName, null,
+                                    new { @class = "form-control" })
+                            }
+                            @Html.ValidationMessage(property.PropertyName)
+                        </div>
+                            break;
+                }
+            }
+            <div class="form-group">
+                <div style="position:relative;">
+                    <label>Зображення</label>
+                    <a class='btn' href='javascript:;'>
+                        Виберіть файл...
+                        <input type="file" name="Image" size="40"
+                               style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                               onchange='$("#upload-file-info").html($(this).val());'>
+                    </a>
+                    <span class='label label-info' id="upload-file-info"></span>
+                </div>
+                @if (Model.ImageData == null)
+                {
+                    <div class="form-control-static">Зображення відсутнє</div>
+                }
+                else
+                {
+                    <img class="img-thumbnail" width="350" height="350"
+                         src="@Url.Action("GetImage", "Sweets",
+                        new { Model.SweetId })" />
+                }
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input type="submit" value="Зберегти" class="btn btn-primary" />
+            @Html.ActionLink("Відмінити зміни та перейти до списку", "Index", null, new
+            {
+                @class = "btn btn-default"
+            })
+        </div>
+    }
+</div>
