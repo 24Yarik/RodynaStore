@@ -24,7 +24,6 @@
                     @using (Html.BeginForm("UpdateToCart", "Cart"))
                     {
                         @Html.Hidden("SweetId", line.Sweet.SweetId)
-                        @Html.Hidden("Quantity", line.Quantity)
                         @Html.HiddenFor(x => x.ReturnUrl)
                         @Html.TextBoxFor(x => line.Quantity)
                         <input class="btn btn-sm btn-success" type="submit" value="Обновить" />
