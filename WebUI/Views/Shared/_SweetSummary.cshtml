@@ -1,0 +1,104 @@
+﻿@model Domain.Entities.Sweet
+
+<link rel="stylesheet" type="text/css" media="all" href="~/Content/simplebox.css" />
+<script type="text/javascript" src="~/Scripts/simplebox.js"></script>
+<script type="text/javascript" src="~/Scripts/simplebox_util.js"></script>
+<script type="text/javascript">
+    (function () {
+        var boxes = [], els, i, l;
+        if (document.querySelectorAll) {
+            els = document.querySelectorAll('a[rel=simplebox]');
+            Box.getStyles('~/Content/simplebox.css', '~/Content/simplebox.css');
+            Box.getScripts('~/Scripts/simplebox_js', '~/Scripts/simplebox.js', function () {
+                simplebox.init();
+                for (i = 0, l = els.length; i < l; ++i)
+                    simplebox.start(els[i]);
+                simplebox.start('a[rel=simplebox_group]');
+            });
+        }
+    })();</script>
+
+<div class="well">
+    <div class="row">
+        <div class="col-xs-9">
+            <h3>
+                <strong>@Model.Name</strong>
+            </h3>
+            <h4>
+                <strong>@Model.Type</strong>
+            </h4>
+        </div>
+        <div class="col-xs-3">
+            <h3>
+                <strong id="price" class="pull-right label label-primary">
+                    @Model.Price.ToString("# грн")
+                </strong>
+            </h3>
+            @using (Html.BeginForm("AddToCart", "Cart"))
+            {
+                <div class="pull-right">
+                    @Html.HiddenFor(x => x.SweetId)
+                    @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                    <input type="submit" class="btn btn-success" value="У кошик" />
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.ImageData != null)
+    {
+        <div class="pull-left" style="margin-right: 10px; margin-bottom:10px">
+           
+            <a rel="simplebox" href="@Url.Action("GetImage", "Sweets",
+                 new { Model.SweetId})">
+                <img class="img-thumbnail" width="200" rel="simplebox" src="@Url.Action("GetImage", "Sweets",
+                 new { Model.SweetId})">
+            </a>
+
+             
+        </div>
+        <div style="margin-bottom: 25px">
+            <h5>
+                <strong>Склад: </strong>@Model.Ingredients
+            </h5>
+        </div>
+        <div style="margin-left: 0px">
+            <div style="margin-bottom: 25px">
+                <h5>
+                    <strong>
+                        Фасування: @Model.Packing
+                    </strong>
+                </h5>
+            </div>
+            <div>
+                <h5>
+                    <strong>
+                        Строк придатності до споживання: @Model.Expiration_date
+                    </strong>
+                </h5>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            <h5>
+                <strong>Склад: </strong>@Model.Ingredients
+            </h5>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <h5>
+                    <strong>Фасування: @Model.Packing</strong>
+                </h5>
+            </div>
+            <div>
+                <h5>
+                    <strong>
+                        Строк придатності до споживання: @Model.Expiration_date
+                    </strong>
+                </h5>
+            </div>
+        </div>
+    }
+</div>
