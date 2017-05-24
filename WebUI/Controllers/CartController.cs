@@ -42,6 +42,19 @@ namespace WebUI.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
+        public RedirectToRouteResult UpdateToCart(Cart cart, int sweetId, int quantity, string returnUrl)
+        {
+            Sweet sweet = repository.Sweets
+                .FirstOrDefault(s => s.SweetId == sweetId);
+
+            if (sweet != null)
+            {
+                cart.AddItem(sweet, quantity);
+            }
+
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
         public RedirectToRouteResult RemoveFromCart(Cart cart, int sweetId, string returnUrl)
         {
             Sweet sweet = repository.Sweets
@@ -84,18 +97,5 @@ namespace WebUI.Controllers
                 return View(new ShippingDetails());
             }
         }
-
-        public ActionResult Update(Cart, Update update)
-            { 
-                if (ModelState.IsValid)
-                    {
-                        var item = repository.Sweets.FirstOrDefault(x => x.Id == update.CartId && x.GoodId == update.GoodId);
-                        repository.Sweets.Update(x => x.Id == item.Id && x.SweetId == item.SweetId, item);
-                        repository.Sweets.SaveAndUpdate(); 
-                        return RedirectToAction("Index");
-                    }
-                return View(update);
-            }
-
     }
 }
