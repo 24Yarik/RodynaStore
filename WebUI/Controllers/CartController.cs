@@ -89,9 +89,9 @@ namespace WebUI.Controllers
             { 
                 if (ModelState.IsValid)
                     {
-                        var item = Sweet.FirstOrDefault(x => x.Id == update.SweetId && x.SweetId == update.SweetId);
-                        Sweet.Update(x => x.Id == item.Id && x.SweetId == item.SweetId, item);
-                        Sweet.SaveAndUpdate(); 
+                        var item = repository.Sweets.FirstOrDefault(x => x.Id == update.CartId && x.GoodId == update.GoodId);
+                        repository.Sweets.Update(x => x.Id == item.Id && x.SweetId == item.SweetId, item);
+                        repository.Sweets.SaveAndUpdate(); 
                         return RedirectToAction("Index");
                     }
                 return View(update);
