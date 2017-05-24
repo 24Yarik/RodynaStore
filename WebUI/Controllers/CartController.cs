@@ -85,17 +85,17 @@ namespace WebUI.Controllers
             }
         }
 
-        public ActionResult Update(Cart, Update update) 
-{ 
-if (ModelState.IsValid)
-{
-var item = Sweet.FirstOrDefault(x => x.Id == update.SweetId && x.SweetId == update.SweetId);
-Sweet.Update(x => x.Id == item.Id && x.SweetId == item.SweetId, item);
-    Sweet.SaveAndUpdate(); 
-return RedirectToAction("Index");
-}
-return View(update);
-}
+        public ActionResult Update(Cart, Update update)
+            { 
+                if (ModelState.IsValid)
+                    {
+                        var item = Sweet.FirstOrDefault(x => x.Id == update.SweetId && x.SweetId == update.SweetId);
+                        Sweet.Update(x => x.Id == item.Id && x.SweetId == item.SweetId, item);
+                        Sweet.SaveAndUpdate(); 
+                        return RedirectToAction("Index");
+                    }
+                return View(update);
+            }
 
     }
 }
