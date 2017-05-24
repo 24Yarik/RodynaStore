@@ -49,10 +49,10 @@ namespace WebUI.Controllers
 
             if (sweet != null)
             {
-                cart.AddItem(sweet, quantity);
+                cart.UpdateItem(sweet, quantity);
             }
 
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToAction("Index");
         }
 
         public RedirectToRouteResult RemoveFromCart(Cart cart, int sweetId, string returnUrl)

@@ -28,6 +28,18 @@ namespace Domain.Entities
             }
         }
 
+        public void UpdateItem(Sweet sweet, int quantity)
+        {
+            CartLine line = lineCollection
+            .Where(s => s.Sweet.SweetId == sweet.SweetId)
+            .FirstOrDefault();
+
+            if (line != null)
+            {
+                line.Quantity = quantity;
+            }
+        }
+
         public void RemoveLine(Sweet sweet)
         {
             lineCollection.RemoveAll(l => l.Sweet.SweetId == sweet.SweetId);

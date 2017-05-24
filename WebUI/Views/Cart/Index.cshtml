@@ -20,7 +20,16 @@
         {
             <tr>    
                 <td class="text-left">@line.Sweet.Type - @line.Sweet.Name</td>
-                <td class="text-center">@Html.TextBoxFor(x => line.Quantity)</td>
+                <td>
+                    @using (Html.BeginForm("UpdateToCart", "Cart"))
+                    {
+                        @Html.Hidden("SweetId", line.Sweet.SweetId)
+                        @Html.Hidden("Quantity", line.Quantity)
+                        @Html.HiddenFor(x => x.ReturnUrl)
+                        @Html.TextBoxFor(x => line.Quantity)
+                        <input class="btn btn-sm btn-success" type="submit" value="Обновить" />
+                    }
+                </td>
                 <td class="text-right">@line.Sweet.Price.ToString("# грн")</td>
                 <td class="text-right">@((line.Quantity * line.Sweet.Price).ToString("# грн"))</td>
                 <td>
