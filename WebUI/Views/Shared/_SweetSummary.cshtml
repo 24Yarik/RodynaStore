@@ -66,7 +66,15 @@
             <div style="margin-bottom: 25px">
                 <h5>
                     <strong>
-                        Фасування: @Model.Packing
+                        Фасування:  @if (@Model.Packing >= 1000)
+                        {
+                            double kg = Model.Packing / 1000.0;
+                            @kg.ToString("#.##" + " кг");
+                        }
+                        else
+                        {
+                            @Model.Packing.ToString("#.## г")
+                        }
                     </strong>
                 </h5>
             </div>
@@ -89,7 +97,16 @@
         <div class="row">
             <div class="col-xs-4">
                 <h5>
-                    <strong>Фасування: @Model.Packing</strong>
+                    <strong>Фасування: @if (@Model.Packing >= 1000)
+                    {
+                        double kg = Model.Packing / 1000.0;
+                        @kg.ToString("#.##" + " кг");
+                    }
+                                       else
+                                       {
+                        @Model.Packing.ToString("#.## г")
+                    }
+                    </strong>
                 </h5>
             </div>
             <div>

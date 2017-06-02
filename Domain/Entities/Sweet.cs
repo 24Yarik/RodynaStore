@@ -23,9 +23,9 @@ namespace Domain.Entities
         [Display(Name="Склад")]
         public string Ingredients { get; set; }
 
-        [Display(Name = "Фасування")]
+        [Display(Name = "Фасування (кг)")]
         [Required(ErrorMessage = "Будь-ласка, вкажіть фасування товару")]
-        public string Packing { get; set; }
+        public int Packing { get; set; }
 
         [Display(Name = "Термін придатності до споживання")]
         [Required(ErrorMessage = "Будь-ласка, введіть термін придатності товару")]
