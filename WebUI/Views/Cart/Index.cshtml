@@ -25,8 +25,11 @@
                     {
                         @Html.Hidden("SweetId", line.Sweet.SweetId)
                         @Html.HiddenFor(x => x.ReturnUrl)
-                        @Html.TextBoxFor(x => line.Quantity)
-                        <input class="btn btn-sm btn-success" type="submit" value="Обновить" />
+                        @Html.TextBox("Quantity", line.Quantity, null, new
+                            {
+                                style = "width:30px; text-align:center"
+                            })
+                        <input class="btn btn-sm btn-success" type="submit" value="Задати кількість" />
                     }
                 </td>
                 <td class="text-right">@line.Sweet.Price.ToString("# грн")</td>
@@ -56,3 +59,14 @@
     <a class="btn btn-primary" href="@Model.ReturnUrl">Продовжити покупки</a>
     @Html.ActionLink("Оформити замовлення", "Checkout", null, new { @class = "btn btn-primary"})
 </div>
+
+<script>
+
+    $("#Quantity").blur(function () {
+        $.post({
+            url: "/Cart/UpdateToCart",
+            data: $("#Cart")[0].serialize(),
+        });
+    });
+
+</script>

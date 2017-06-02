@@ -16,7 +16,7 @@ namespace WebUI.Controllers
             repository = repo;
         }
 
-       public PartialViewResult Menu(string type = null)
+        public PartialViewResult Menu(string type = null)
         {
             ViewBag.SelectedType = type;
 
@@ -25,6 +25,17 @@ namespace WebUI.Controllers
                 .Distinct()
                 .OrderBy(x => x);
             return PartialView("FlexMenu", types);
+        }
+
+        public PartialViewResult Filtering(string name = null)
+        {
+            ViewBag.SelectedName = name;
+
+            IEnumerable<string> names = repository.Sweets
+                .Select(sweet => sweet.Name)
+                .Distinct()
+                .OrderBy(x => x);
+            return PartialView("FlexMenu", names);
         }
     }
 }
