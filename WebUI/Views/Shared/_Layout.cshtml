@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/simplebox.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
 </head>
@@ -32,6 +33,28 @@
             @RenderBody()
         </div>
     </div>
+    
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="~/Scripts/simplebox.js"></script>
+    <script type="text/javascript" src="~/Scripts/simplebox_util.js"></script>
+    <script type="text/javascript">
+        (function () {
+            var boxes = [], els, i, l;
+            if (document.querySelectorAll) {
+                els = document.querySelectorAll('a[rel=simplebox]');
+                Box.getStyles('~/Content/simplebox.css', '~/Content/simplebox.css');
+                Box.getScripts('~/Scripts/simplebox_js', '~/Scripts/simplebox.js', function () {
+                    simplebox.init();
+                    for (i = 0, l = els.length; i < l; ++i)
+                        simplebox.start(els[i]);
+                    simplebox.start('a[rel=simplebox_group]');
+                });
+            }
+        })();
+    </script>
+
+    @RenderSection("scripts", required: false)
 
 </body>
 </html>

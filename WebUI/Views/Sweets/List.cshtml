@@ -13,8 +13,8 @@
             autocomplete="off"
             id="sort-by"
             onchange="sortBy($('#sort-by').val(), true); checkOrderOption('#sort-asc', '#sort-desc')">
-        <option value="name" selected>За назвою</option>
-        <option value="price">За ціною</option>
+        <option value="sortbyName" selected>За назвою</option>
+        <option value="sortbyPrice">За ціною</option>
     </select>
 </div>
 <div class="btn-group" data-toggle="buttons" id="sort-order">
@@ -24,19 +24,25 @@
     </label>
     <label class="btn btn-default btn-sm" title="по убыванию" id="sort-desc" onclick="sortBy($('#sort-by').val(), false)">
         <input type="radio" name="options" id="option1" autocomplete="off">
-        <i class="glyphicon glyphicon-sort-by-attribute-alt"></i>
+        <i class="glyphicon glyphicon-sort-by-attributes-alt"></i>
     </label>
 </div>
 
-
-@foreach (var sweet in Model.Sweets)
-{
-    @Html.Partial("_SweetSummary", sweet)
-}
+<div id="sortable">
+    @foreach (var sweet in Model.Sweets)
+    {
+        <div id="sort-elem" sortbyName="@sweet.Name" sortbyPrice="@sweet.Price">
+            @Html.Partial("_SweetSummary", sweet)
+        </div>
+    }
+</div>
 
 <div class="btn-group pull-right">
         @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, type = Model.CurrentType }))
 </div>
+
+
+@section scripts {
 
 <script>
 
@@ -63,3 +69,4 @@
     }
 
 </script>
+}
