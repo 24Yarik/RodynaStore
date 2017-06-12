@@ -11,5 +11,6 @@ namespace WebUI.Models
         public IEnumerable<Sweet> Sweets { get; set; }
         public PagingInfo PagingInfo { get; set; }
         public string CurrentType { get; set; }
+        public string CurrentOrderBy { get; set; }
     }
 }

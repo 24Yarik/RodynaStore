@@ -6,67 +6,52 @@
     ViewBag.Title = "Родина - рідніше не буває!";
 }
 
+@Html.Hidden("type", Model.CurrentType, new { id = "type" })
+@Html.Hidden("orderBy", Model.CurrentOrderBy, new { id = "orderBy" })
+@Html.Hidden("byAsc", Model.CurrentOrderBy, new { id = "byAsc" })
+
 <!-- Кнопки для сортировок -->
-<div class="form-group form-group-sm">
-    <select class="form-control"
-            title="Сортувати за.."
-            autocomplete="off"
-            id="sort-by"
-            onchange="sortBy($('#sort-by').val(), true); checkOrderOption('#sort-asc', '#sort-desc')">
-        <option value="sortbyName" selected>За назвою</option>
-        <option value="sortbyPrice">За ціною</option>
-    </select>
-</div>
-<div class="btn-group" data-toggle="buttons" id="sort-order">
-    <label class="btn btn-default btn-sm active" title="по возрастанию" id="sort-asc" onclick="sortBy($('#sort-by').val(), true)">
-        <input type="radio" name="options" id="option2" autocomplete="off" selected>
-        <i class="glyphicon glyphicon-sort-by-attributes"></i>
-    </label>
-    <label class="btn btn-default btn-sm" title="по убыванию" id="sort-desc" onclick="sortBy($('#sort-by').val(), false)">
-        <input type="radio" name="options" id="option1" autocomplete="off">
-        <i class="glyphicon glyphicon-sort-by-attributes-alt"></i>
-    </label>
+<div class="row">
+    <div class="form-group form-group-sm col-md-8">
+        <select class="form-control"
+                title="Сортувати за.."
+                autocomplete="off"
+                id="orderBySelect"
+                onchange="getList($('#type').val(), $('#orderBySelect').val(), $('#byAsc').val())">
+            <option value="">---</option>
+            <option value="name">За назвою</option>
+            <option value="price">За ціною</option>
+        </select>
+    </div>
+    <div class="btn-group col-md-4" data-toggle="buttons">
+        <label class="btn btn-default btn-sm" title="по возрастанию" onclick="getList($('#type').val(), $('#orderBySelect').val(), true)">
+            <input type="radio" name="options" id="option2" autocomplete="off">
+            <i class="glyphicon glyphicon-sort-by-attributes"></i>
+        </label>
+        <label class="btn btn-default btn-sm" title="по убыванию" onclick="getList($('#type').val(), $('#orderBySelect').val(), false)">
+            <input type="radio" name="options" id="option1" autocomplete="off">
+            <i class="glyphicon glyphicon-sort-by-attributes-alt"></i>
+        </label>
+    </div>
 </div>
 
-<div id="sortable">
+<div>
     @foreach (var sweet in Model.Sweets)
     {
-        <div id="sort-elem" sortbyName="@sweet.Name" sortbyPrice="@sweet.Price">
-            @Html.Partial("_SweetSummary", sweet)
-        </div>
+        @Html.Partial("_SweetSummary", sweet)
     }
 </div>
 
 <div class="btn-group pull-right">
-        @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, type = Model.CurrentType }))
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, orderBy = Model.CurrentOrderBy, type = Model.CurrentType }))
 </div>
 
-
-@section scripts {
-
 <script>
-
-    function sortBy(attr, byAscending) {
-        var elements = $.makeArray($('#sortable #sort-elem'));
-        elements.sort(function (a, b) {
-            a = $(a).attr(attr).replace(':', '').replace(',', '');
-            b = $(b).attr(attr).replace(':', '').replace(',', '');
-            if (byAscending) {
-                return a - b;
-            } else {
-                return b - a;
-            }
-        });
-        $(elements).appendTo('#sortable');
+    window.onload = function () {
+        $('#orderBySelect').val($('#orderBy').val())
     }
 
-    function checkOrderOption(checked, unchecked) {
-        $('#sort-order ' + checked).addClass('active');
-        $('#sort-order ' + checked + ' input').attr('checked', 'checked');
-
-        $('#sort-order ' + unchecked).removeClass('active');
-        $('#sort-order ' + unchecked + ' input').removeAttr('checked');
+    function getList(type, orderBy, byAsc) {
+        window.location.href = '/Sweets/List?type=' + type + '&orderBy=' + orderBy + '&byAsc=' + byAsc; 
     }
-
 </script>
-}

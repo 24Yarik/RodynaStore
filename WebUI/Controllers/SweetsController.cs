@@ -9,6 +9,7 @@ using WebUI.Models;
 
 namespace WebUI.Controllers
 {
+    [Route("[controller]/[action]")]
     public class SweetsController : Controller
     {
         private ISweetRepository repository;
@@ -19,15 +20,25 @@ namespace WebUI.Controllers
             repository = repo;
         }
 
-        public ViewResult List( string type, int page = 1)
+        [HttpGet]
+        public ViewResult List(string type, string orderBy, bool? byAsc, int page = 1)
         {
+            type = String.IsNullOrEmpty(type) ? null : type;
+
+            var sweets = String.IsNullOrEmpty(type) ? 
+                repository.Sweets :
+                repository.Sweets.Where(s => s.Type == null || s.Type == type);
+
+            switch (orderBy)
+            {
+                case "name": sweets = !byAsc.HasValue || byAsc.Value ? sweets.OrderBy(x => x.Name) : sweets.OrderByDescending(x => x.Name); break;
+                case "price": sweets = !byAsc.HasValue || byAsc.Value ? sweets.OrderBy(x => x.Price) : sweets.OrderByDescending(x => x.Price); break;
+                default: sweets = sweets.OrderBy(x => x.SweetId); break;
+            }
+
             SweetsListViewModel model = new SweetsListViewModel
             {
-                Sweets = repository.Sweets
-                .Where(s => type == null || s.Type == type)
-                .OrderBy(sweet => sweet.SweetId)
-                .Skip((page - 1)*pageSize)
-                .Take(pageSize),
+                Sweets = sweets.Skip((page - 1)*pageSize).Take(pageSize),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -36,7 +47,8 @@ namespace WebUI.Controllers
                     repository.Sweets.Count() : 
                     repository.Sweets.Where(sweet => sweet.Type == type).Count()
                 },
-                CurrentType = type
+                CurrentType = type,
+                CurrentOrderBy = orderBy,
             };
 
             return View(model);
