@@ -12,5 +12,6 @@ namespace WebUI.Models
         public PagingInfo PagingInfo { get; set; }
         public string CurrentType { get; set; }
         public string CurrentOrderBy { get; set; }
+        public bool? CurrentByAsc { get; set; }
     }
 }

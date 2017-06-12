@@ -8,7 +8,7 @@
 
 @Html.Hidden("type", Model.CurrentType, new { id = "type" })
 @Html.Hidden("orderBy", Model.CurrentOrderBy, new { id = "orderBy" })
-@Html.Hidden("byAsc", Model.CurrentOrderBy, new { id = "byAsc" })
+@Html.Hidden("byAsc", Model.CurrentByAsc, new { id = "byAsc" })
 
 <!-- Кнопки для сортировок -->
 <div class="row">
@@ -43,7 +43,12 @@
 </div>
 
 <div class="btn-group pull-right">
-    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, orderBy = Model.CurrentOrderBy, type = Model.CurrentType }))
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new {
+    page = x,
+    orderBy = Model.CurrentOrderBy,
+    type = Model.CurrentType,
+    byAsc = Model.CurrentByAsc
+}))
 </div>
 
 <script>

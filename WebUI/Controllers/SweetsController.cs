@@ -31,8 +31,8 @@ namespace WebUI.Controllers
 
             switch (orderBy)
             {
-                case "name": sweets = !byAsc.HasValue || byAsc.Value ? sweets.OrderBy(x => x.Name) : sweets.OrderByDescending(x => x.Name); break;
-                case "price": sweets = !byAsc.HasValue || byAsc.Value ? sweets.OrderBy(x => x.Price) : sweets.OrderByDescending(x => x.Price); break;
+                case "name": sweets = !byAsc.HasValue || byAsc.Value.Equals(true) ? sweets.OrderBy(x => x.Name) : sweets.OrderByDescending(x => x.Name); break;
+                case "price": sweets = !byAsc.HasValue || byAsc.Value.Equals(true) ? sweets.OrderBy(x => x.Price) : sweets.OrderByDescending(x => x.Price); break;
                 default: sweets = sweets.OrderBy(x => x.SweetId); break;
             }
 
@@ -49,6 +49,7 @@ namespace WebUI.Controllers
                 },
                 CurrentType = type,
                 CurrentOrderBy = orderBy,
+                CurrentByAsc = byAsc,
             };
 
             return View(model);
